@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/user/user.css">
+</head>
+
+<body>
+<div class="main">
+    <div th:insert="~{Admin::topbar}"></div>
+    <div class="statck-nav">
+        <ul class="nav nav-pills nav-stacked" th:fragment="userbar">
+            <li role="presentation" >
+                <a href="#"th:href="@{/user-order}">订单</a>
+            </li>
+            <li role="presentation">
+                <a href="#"th:href="@{/shopping}">商品</a>
+            </li>
+            <li role="presentation">
+                <a href="#" th:href="@{/shoppingcart}">购物车</a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-detail">
+        <h3>购物车</h3>
+        <div class="detail-tab">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">购物车</a></li>
+            </ul>
+        </div>
+        <div class="item-detail-main">
+            <div class="order-list">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>主图</td>
+                        <td>商品编码</td>
+                        <td>商品名称</td>
+                        <td>规格</td>
+                        <td>单价</td>
+                        <td>数量</td>
+                        <td>小计</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody id="t_body">
+                        <tr  th:each="p:${shoppingcart}" th:id="p-+${p.c_id}">
+                            <td><img  th:src="${p.c_img}" alt=""></td>
+                            <td id = "cartId" th:text="${p.c_id}">{{id}}</td>
+                            <td th:text="${p.c_name}">{{商品名称}}</td>
+                            <td th:text="${p.c_weight}">{{规格}}</td>
+                            <td th:id="p-+${p.c_id}+-price" th:text="${p.c_price}">5</td>
+                            <td th:id="p-+${p.c_id}+-num" th:text="${p.c_num}">1</td>
+                            <td th:id="p-+${p.c_id}+-money" th:text="${p.c_money}">5</td>
+                            <td>
+                                <button th:id="AddBtn-+${p.c_id}" onclick="AddNumber(this)">+</button>
+                                <button th:id="ReduceBtn-+${p.c_id}" onclick="ReduceNumber(this)">-</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-info">
+                <span>金额：<span id="total-money"></span></span>
+                <br>
+                <span>商品数量：<span id="total-num"></span></span>
+                <button class="btn btn-primary" style="float:right;margin-bottom: 5px;" type="submit" onclick="confirmCart()">确认下单</button>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>备注：<textarea class="form-control" rows="3" id="demo"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>收货人地址：<textarea class="form-control" id="address"rows="3"></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-default" onclick="window.history.back()" style="float:right;margin: 0 10px 10px 0;" type="submit">返回</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/index.js"></script>
+<script src="../../static/js/user/user.js"></script>
+<script>
+    function AddNumber(self) {
+        var id = self.id.toString().charAt(self.id.toString().length-1);
+        var num = $('#p-'+id+'-num').text();
+        var price = $('#p-'+id+'-price').text();
+        var money = (Number(price)*(Number(num)+1)).toFixed(2);
+        var totalNum = $('#total-num').text();
+        var totalMoney = $('#total-money').text();
+        $('#total-num').text(Number(totalNum)+1);
+        $('#total-money').text((Number(totalMoney)+Number(price)).toFixed(2));
+        $('#p-'+id+'-num').text(Number(num)+1);
+        $('#p-'+id+'-money').text(money);
+        $.ajax({
+            url:'/ajax/addNumber',
+            data:"id="+id,
+            type:'post',
+            success:function (re) {
+                if(re==="success"){
+
+                }else{
+                    alert("error");
+                }
+            }
+        });
+    }
+    function ReduceNumber(self){
+        var id = self.id.toString().charAt(self.id.toString().length-1);
+        var num = $('#p-'+id+'-num').text();
+        var price = $('#p-'+id+'-price').text();
+        var money = (Number(price)*(Number(num)-1)).toFixed(2);
+        var totalNum = $('#total-num').text();
+        var totalMoney = $('#total-money').text();
+        $('#total-num').text(Number(totalNum)-1);
+        $('#total-money').text((Number(totalMoney)-Number(price)).toFixed(2));
+        $('#p-'+id+'-num').text(Number(num)-1);
+        $('#p-'+id+'-money').text(money);
+        if((Number(num)-1).toFixed(2)==0){
+            delPro(id);
+        }
+        $.ajax({
+            url:'/ajax/reduceNumber',
+            data:"id="+id,
+            type:'post',
+            success:function (re) {
+                if(re==="success"){
+                }else{
+                    alert("error");
+                }
+            }
+        });
+    }
+    function delPro(id) {
+        $('#p-'+id).hide();
+    }
+
+    function confirmCart() {
+
+        var money = $('#total-money').text();
+        var demo = $("#demo").val();
+        var address = $('#address').val();
+        if(address){
+            $.ajax({
+                url:'/ajax/confirmCart',
+                data:"money="+money+'&address='+address,
+                type:'post',
+                success:function (re) {
+                    if(re==="success"){
+                        $('tbody').hide();
+                    }else{
+                        alert("error");
+                    }
+                }
+            });
+        }else{
+            alert("请输入地址");
+        }
+    }
+
+    /* 初始化 总金额 等数据*/
+    var trList = $('#t_body').children("tr");
+    var _totalNum = 0;
+    var _totalMoney = 0.0;
+    for (var i=0;i<trList.length;i++) {
+        var ids = trList[i].id;
+        var num = $('#'+ids+'-num').text();
+        var money = $('#'+ids+'-money').text();
+        _totalNum += Number(num);
+        _totalMoney += (parseFloat(money));
+    }
+    $('#total-num').text(_totalNum);
+    $('#total-money').text(_totalMoney);
+</script>
+</body>
+
+</html>

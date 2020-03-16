@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户退款单</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/user/user.css">
+</head>
+
+<body>
+<div class="main">
+    <div th:insert="~{Admin::topbar}"></div>
+    <div class="statck-nav">
+        <div th:replace="~{shoppingcart::userbar}"></div>
+    </div>
+    <div class="item-detail">
+        <h3>退款单</h3>
+        <div class="detail-tab">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">退款单详情</a></li>
+            </ul>
+        </div>
+        <div class="item-detail-main">
+            <p class="bg-primary detail-hint">
+              <span>
+                    订单号：<span >20180003</span>
+                </span>
+                <br>
+                <br>
+                <span>
+                    状态：<span >未付款</span>
+                </span>
+            </p>
+            <div class="order-list">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>主图</td>
+                        <td>商品编码</td>
+                        <td>商品名称</td>
+                        <td>规格</td>
+                        <td>单价</td>
+                        <td>数量</td>
+                        <td>小计</td>
+                    </tr>
+                    </thead>
+                    <tbody id="t_body">
+                    <tr id="p-1" th:each="p:${detail}">
+                        <td><img th:src="${p.c_img}" alt=""></td>
+                        <td id = "cartId" th:text="${p.c_id}">{{id}}</td>
+                        <td th:text="${p.c_name}">{{商品名称}}</td>
+                        <td th:text="${p.c_weight}">{{规格}}</td>
+                        <td id="p-1-price" th:text="${p.c_price}">5</td>
+                        <td id="p-1-num" th:text="${p.c_num}">1</td>
+                        <td id="p-1-money" th:text="${p.c_money}">5</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-info">
+                <span>金额：<span id="total-money"></span></span>
+                <br>
+                <span>商品数量：<span id="total-num"></span></span>
+                <button class="btn btn-default" style="float:right;margin-bottom: 5px;"
+                        type="submit"  onclick="confirmRefound()"
+                        th:disabled="${o_pay}? #{true} : #{false}">确认退款</button>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>备注：<span th:text="${o_demo}">{{备注}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>收货人信息：<span>山东省威海市文化西路1号</span></td>
+                    </tr>
+                    <tr>
+                        <td>制单人：<span th:text="${o_sele}">{{制单人}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>日期：<span th:text="${o_date}">{{日期}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn btn-default" onclick="window.history.back()" style="float:right;margin: 0 10px 10px 0;" type="submit" >返回</button>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/index.js"></script>
+<script src="../../static/js/user/user.js"></script>
+<script>
+    function confirmRefound() {
+        var id = $('#cartId').text();
+        $.ajax({
+            url:'/ajax/confirmRefound',
+            type:'post',
+            data:'id='+id,
+            success:function (re) {
+                alert(re);
+                location.reload();
+            }
+        });
+
+    }
+    /* 初始化 总金额 等数据*/
+    var trList = $('#t_body').children("tr");
+    var _totalNum = 0;
+    var _totalMoney = 0;
+    for (var i=0;i<trList.length;i++) {
+        var ids = trList[i].id;
+        var num = $('#'+ids+'-num').text();
+        var money = $('#'+ids+'-money').text();
+        _totalNum +=parseInt(num);
+        _totalMoney+=parseInt(money);
+    }
+    $('#total-num').text(_totalNum);
+    $('#total-money').text(_totalMoney);
+</script>
+</body>
+
+</html>

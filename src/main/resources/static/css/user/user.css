@@ -1,0 +1,55 @@
+.pagination {
+    margin-top: 0;
+    padding-left: 80%;
+}
+
+.item-detail-main{
+    max-height: 100%;
+    max-width: 100%;
+    overflow:auto;
+}
+
+.item-detail-main td {
+    line-height: 50px;
+}
+
+.item-detail-main tbody tr {
+    height: 50px;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+
+.detail-hint {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 0 10px 0;
+}
+
+.detail-hint span {
+    margin-left:15px;
+}
+.order-list{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.order-list img{
+    height: 100px;
+}
+.form-info{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.user-search{
+    width: 20%;
+}

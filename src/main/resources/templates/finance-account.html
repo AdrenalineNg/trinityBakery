@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>会计</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/user/user.css">
+</head>
+
+<body>
+<div class="main">
+    <div th:insert="~{Admin::topbar}"></div>
+    <div class="statck-nav">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active">
+                <a href="#">订单</a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-detail">
+        <h3>订单</h3>
+        <div class="detail-tab">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#"th:href="@{/finance-account}">订单</a></li>
+                <li role="presentation"><a href="#"th:href="@{/finance-account-refund}">退货单</a></li>
+                <!--<li role="presentation"><a href="#"th:href="@{/finance-account-billofloading}">提货单</a></li>-->
+            </ul>
+        </div>
+        <div class="item-detail-main">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <td>单号</td>
+                    <td>制单人</td>
+                    <td>客户</td>
+                    <td>金额</td>
+                    <td>收货地址</td>
+                    <td>审核状态</td>
+                    <td>付款状态</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p:${order}">
+                    <td th:text="${p.order_id}">{{单号}}</td>
+                    <td th:text="${p.salesperson}">{{销售}}</td>
+                    <td th:text="${user}">{{客户}}</td>
+                    <td th:text="${p.totalprice}">{{金额}}</td>
+                    <td th:text="${p.address}">{{收货地址}}</td>
+                    <td th:text="${p.is_confirm}">{{会计审核状态}}</td>
+                    <td th:text="${p.is_paid}">{{付款状态}}</td>
+                    <td>
+                        <span style="margin-left: 10px;"><a th:href="@{/account-confirm/}+${p.order_id}">确认</a></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr style="color: #40E0D0">
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/index.js"></script>
+<script src="../../static/js/user/user.js"></script>
+</body>
+
+</html>

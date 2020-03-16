@@ -1,0 +1,27 @@
+body {
+    height: 720px;
+}
+.main{
+    height: 100%;
+    background-color:#40E0D0;
+}
+
+.login-body{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1%;
+}
+.bt-center{
+    padding-left: auto;
+    padding-right: auto;
+}
+.sys-title img{
+    height: 200px;
+
+}
+.sys-title{
+    padding-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}

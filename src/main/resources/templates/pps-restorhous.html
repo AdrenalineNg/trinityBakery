@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>生产计划科管理员</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/user/user.css">
+    <link rel="stylesheet" href="../../static/css/user/shopping.css">
+</head>
+
+<body>
+<div class="main">
+    <div th:insert="~{Admin::topbar}"></div>
+    <div class="statck-nav">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation">
+                <a href="#"th:href="@{/pps}">订单</a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="#"th:href="@{/pps-restorhous}">库存</a>
+            </li>
+            <li role="presentation">
+                <a href="#"th:href="@{/pps-plan}">生产计划</a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-detail">
+        <h3>库存</h3>
+        <div class="detail-tab">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">库存列表</a></li>
+            </ul>
+
+        </div>
+        <div class="item-detail-main">
+            <div class="row" th:each="p:${storage}">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img th:src="${p.p_img}" alt="...">
+                        <div class="caption">
+                            <div class="form-group">
+                                <label>名称：<span th:text="${p.p_name}">{{name}}</span></label>
+                                <br>
+                                <label>批号：<span th:text="${p.sfid}">{{sfid}}</span></label>
+                                <br>
+                                <label>数量：<span th:text="${p.quantity}">{{quantity}}</span></label>
+                                <br>
+                                <label>入库时间：<span th:text="${p.sto_date}">{{sto_date}}</span></label>
+                                <br>
+                                <label>保质期：<span th:text="${p.exp}">{{exp}}</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="color: #40E0D0">
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/index.js"></script>
+<script src="../../static/js/user/shopping.js"></script>
+</body>
+
+</html>

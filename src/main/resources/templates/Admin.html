@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>系统管理员</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/user/user.css">
+    <link rel="stylesheet" href="../../static/css/user/shopping.css">
+</head>
+
+<body>
+<div class="main">
+    <nav class="navbar navbar-default my-nav" th:fragment="topbar">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <img src="../../static/img/Logo.png" alt="" class="img-responsive center-block" style="height: 50px;">
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">用户</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">消息
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">业务消息</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="#">news</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="statck-nav">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation">
+                <a href="#">员工</a>
+            </li>
+        </ul>
+    </div>
+    <div class="item-detail">
+        <h3>员工</h3>
+        <div class="detail-tab">
+            <ul class="nav nav-tabs" style="float: left">
+                <li role="presentation" class="active"><a href="#">员工列表</a></li>
+            </ul>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                    新增员工
+                </button>
+            </div>
+        </div>
+
+
+        <div class="item-detail-main">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr >
+                    <td>姓名</td>
+                    <td>账号</td>
+                    <td>部门</td>
+                    <td>电话</td>
+                    <td>邮箱</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody id="insert-people" >
+                <tr th:each="a:${admin}">
+                	<td>[(${a.a_name})]</td>
+                	<td>[(${a.a_id})]</td>
+                	<td>[(${a.a_department})]</td>
+                	<td>[(${a.a_tel})]</td>
+                	<td>[(${a.a_email})]</td>
+                	<td>
+                         <a href="#" data-toggle="modal" data-target="#changeAdmin" onclick="showAdmin(this)">修改</a>
+                         <a href="#" onclick="delAdmin(this)">删除</a> 
+                	</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr style="color: #40E0D0">
+            <!--<nav aria-label="Page navigation">-->
+                <!--<ul class="pagination">-->
+                    <!--<li>-->
+                        <!--<a href="#" aria-label="Previous">-->
+                            <!--<span aria-hidden="true">&laquo;</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li><a href="#">1</a></li>-->
+                    <!--<li><a href="#">2</a></li>-->
+                    <!--<li><a href="#">3</a></li>-->
+                    <!--<li><a href="#">4</a></li>-->
+                    <!--<li><a href="#">5</a></li>-->
+                    <!--<li>-->
+                        <!--<a href="#" aria-label="Next">-->
+                            <!--<span aria-hidden="true">&raquo;</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</nav>-->
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增员工</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="select-pro">选择部门</label>
+                    <input type="text" id="select-pro" list="pro-list">
+                    <datalist id="pro-list">
+                        <option value="会计">
+                        <option value="出纳">
+                        <option value="生产计划科">
+                        <option value="销售部">
+                        <option value="生产车间">
+                        <option value="仓库">
+                        <option value="企业管理者">
+                    </datalist>
+                </div>
+
+                <div>
+                    <label for="num-pro">请输入姓名</label>
+                    <input type="text" id="num-pro">
+                </div>
+
+                <div>
+                    <label for="tels">请输入电话</label>
+                    <input type="text" id="tels">
+                </div>
+
+                <div>
+                    <label for="emails">请输入邮箱</label>
+                    <input type="text" id="emails">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="create_admin()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >修改员工</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="select-pro">选择部门</label>
+                    <input type="text" id="change-pro" list="pro-list">
+                </div>
+
+                <div>
+                    <label for="num-pro">请输入姓名</label>
+                    <input type="text" id="change-name">
+                </div>
+
+                <div>
+                    <label for="tels">请输入电话</label>
+                    <input type="text" id="change-tels">
+                </div>
+
+                <div>
+                    <label for="emails">请输入邮箱</label>
+                    <input type="text" id="change-emails">
+                </div>
+                <input type="hidden" id="change-account">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="changeAdmin()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/index.js"></script>
+<script src="../../static/js/user/shopping.js"></script>
+<script>
+    function create_admin(){
+        var types = $('#select-pro').val();
+        var name = $('#num-pro').val();
+        var phone = $('#tels').val();
+        var email = $('#emails').val();
+        if (types && name && phone && email){
+            //ajax异步更新数据
+            $.ajax({
+                url:'/ajax/createAdmin',
+                type:'post',
+                data:"pro="+types+"&name="+name+"&phone="+phone+"&email="+email,
+                success:function (re) {
+                    $('#insert-people').append(re);
+                    $('#myModal').modal('hide');
+                    $('#select-pro').val('');
+                    $('#num-pro').val('');
+                    $('#tels').val('');
+                    $('#emails').val('');
+                },
+                //提示错误
+                error:function (re) {
+                    alert("error");
+                }
+            });
+        }else{
+            alert("请填写完整信息");
+        }
+    }
+
+    function getUserInfo(self) {
+        var data = self.parentNode.parentNode.childNodes;
+        var s = [];
+        for(var i=0;i<= 10;++i){
+            if(i%2!=0){
+                var rmp = data[i].innerHTML;
+                s.push(rmp);
+            }
+        }
+        return s;
+    }
+    function showAdmin(self) {
+        var s = getUserInfo(self);
+        $('#change-pro').val(s[2]);
+        $('#change-name').val(s[0]);
+        $('#change-tels').val(s[3]);
+        $('#change-emails').val(s[4]);
+        $('#change-account').val(s[1]);
+    }
+    function changeAdmin() {
+        var types = $('#change-pro').val();
+        var name = $('#change-name').val();
+        var phone = $('#change-tels').val();
+        var email = $('#change-emails').val();
+        var account = $('#change-account').val();
+        $.ajax({
+            url:'/ajax/changeAdmin',
+            data:"account="+account+"&pro="+types+"&name="+name+"&phone="+phone+"&email="+email,
+            type:'post',
+            success:function(re) {
+                if(re==="success"){
+                    location.reload();
+                }else{
+                    alert("error");
+                }
+            }
+        });
+    }
+
+    function delAdmin(self) {
+        var s = getUserInfo(self);
+        var account = s[1];
+        $.ajax({
+            url:'/ajax/delAdmin',
+            data:"account="+account,
+            type:'post',
+            success:function(re) {
+                if(re==="success"){
+                    self.parentNode.parentNode.style.display='none';
+                }else{
+                    alert("error");
+                }
+            }
+        });
+
+    }
+</script>
+</body>
+
+</html>
